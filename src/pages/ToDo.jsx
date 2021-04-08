@@ -26,6 +26,16 @@ const ToDo = () => {
 
     const { todos, setTodos } = useContext(ToDoContext);
 
+    const handleOnDragEnd = (drop) => {
+        let orderedTodos = [...todos];
+        const itemIndex = drop.source.index;
+        const [todo] = orderedTodos.splice(itemIndex, 1);
+        
+        orderedTodos.splice(drop.destination.index, 0, todo);
+        setTodos(orderedTodos);
+    }
+
+
     return (
         <Grid
             container
@@ -35,7 +45,7 @@ const ToDo = () => {
             justify="center"
         >
             <ToDoTitle />
-            <DragDropContext>
+            <DragDropContext onDragEnd={handleOnDragEnd}>
                 <Droppable droppableId="todos">
                     {providedDroppable => (
                         <div
@@ -61,6 +71,7 @@ const ToDo = () => {
                                                     <ListItem button>
                                                         <ListItemText className={classes.todoItem} disableTypography primary={todo.title} />
                                                     </ListItem>
+
                                                 </div>
                                             )}
 
@@ -69,6 +80,7 @@ const ToDo = () => {
                                     <Divider />
                                 </List>
                             </Grid>
+                            {providedDroppable.placeholder}
                         </div>
 
                     )}
