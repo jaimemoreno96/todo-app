@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
-import iconCheck from '../assets/images/icon-check.svg';
 import iconCross from '../assets/images/icon-cross.svg';
+import ToDoCheck from '../components/ToDoCheck';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ToDoItem = ({ todo }) => {
     const classes = useStyles();
-    const { id, title, completed } = todo;
+    const { _id, title, completed } = todo;
 
     const [toggle, setToggle] = useState(false);
 
@@ -78,13 +78,7 @@ const ToDoItem = ({ todo }) => {
             onMouseEnter={() => setToggle(true)}
             onMouseLeave={() => setToggle(false)}
         >
-            <ListItemAvatar>
-                <Avatar className={classes.containerIconTheme}>
-                    <Avatar className={classes.iconTheme}>
-                        <img src={iconCheck} alt="icon-check" />
-                    </Avatar>
-                </Avatar>
-            </ListItemAvatar>
+            <ToDoCheck completed={completed} />
             <ListItemText className={classes.todoItem} disableTypography primary={title} />
             {deleteBtn}
         </ListItem >

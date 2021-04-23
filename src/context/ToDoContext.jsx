@@ -8,11 +8,11 @@ const ToDoProvider = (props) => {
     const [todos, setTodos] = useState([]);
 
     const getTodos = async () => {
-        const url = 'https://jsonplaceholder.typicode.com/users/1/todos';
+        const url = 'http://localhost:4000/api/todos' //'https://jsonplaceholder.typicode.com/users/1/todos';
 
-        const todos = await axios(url);
-
-        setTodos(todos.data);
+        const response = await axios(url);
+        
+        setTodos(response.data.todos);
 
     }
 
