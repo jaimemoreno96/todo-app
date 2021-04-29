@@ -1,6 +1,9 @@
+import React, { useContext, useState } from 'react';
 import { FormControl, makeStyles, OutlinedInput, Paper } from '@material-ui/core';
-import React from 'react';
-import ToDoCheck from './ToDoCheck';
+import { useForm } from 'react-hook-form';
+
+import ToDoCheckInput from './ToDoCheck/ToDoCheckInput';
+import useToDo from '../hooks/useToDo';
 
 const useStyles = makeStyles((theme) => ({
     inputStyle: {
@@ -13,21 +16,37 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
 const ToDoInput = () => {
     const classes = useStyles();
+    const { register, formState: { errors }, handleSubmit } = useForm();
+    const [setTitle, todo] = useToDo();
+    
+
+    const onSubmit = async values => {
+        const { title } = values;
+        console.log(title);
+        setTitle(title);
+        // setTodos([
+        //     [...todos],
+        //     todo
+        // ]);
+    }
+
 
     return (
         <Paper className={classes.inputStyle} elevation={3}>
-            <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined" component="form" onSubmit={handleSubmit(onSubmit)}>
                 <OutlinedInput
                     id="outlined-adornment-weight"
                     placeholder="Create a new todo..."
-                    startAdornment={<ToDoCheck />}
-                    // value={values.weight}
-                    // onChange={handleChange('weight')}
+                    startAdornment={<ToDoCheckInput />}
+                    // value={todo}
+                    // onChange={() => updTodo(todo)}
+                    {...register("title", { required: true })}
                     aria-describedby="outlined-todo-helper-text"
                     inputProps={{
-                        'aria-label': 'todo',
+                        'aria-label': 'title',
                     }}
                     labelWidth={0}
                     className={classes.fontStyle}

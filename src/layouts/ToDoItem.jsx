@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
 import iconCross from '../assets/images/icon-cross.svg';
-import ToDoCheck from '../components/ToDoCheck';
+import ToDoCheckItem from '../components/ToDoCheck/ToDoCheckItem';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,7 +78,7 @@ const ToDoItem = ({ todo }) => {
             onMouseEnter={() => setToggle(true)}
             onMouseLeave={() => setToggle(false)}
         >
-            <ToDoCheck completed={completed} />
+            <ToDoCheckItem completed={completed} />
             <ListItemText className={classes.todoItem} disableTypography primary={title} />
             {deleteBtn}
         </ListItem >

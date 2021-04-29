@@ -1,13 +1,13 @@
 import React from 'react';
 import { Avatar, ListItemAvatar, makeStyles } from '@material-ui/core';
-import iconCheck from '../assets/images/icon-check.svg';
+import iconCheck from '../../assets/images/icon-check.svg';
 
 
 const useStyles = makeStyles((theme, completed) => ({
     containerIcon: {
         width: theme.spacing(3.5),
         height: theme.spacing(3.5),
-        background: completed ? theme.palette.common.white : 'hsl(0, 0%, 98%)',
+        background: completed ? 'linear-gradient(to right bottom, hsl(192, 100%, 67%), hsl(280, 87%, 65%))' : 'hsl(0, 0%, 98%)',
         "&:hover": {
             background: 'linear-gradient(to right bottom, hsl(192, 100%, 67%), hsl(280, 87%, 65%))',
             cursor: "pointer"
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme, completed) => ({
     }
 }));
 
-const ToDoCheck = ({ completed }) => {
+const ToDoCheckItem = ({ completed }) => {
     const classes = useStyles(completed);
 
     return (
@@ -37,4 +37,4 @@ const ToDoCheck = ({ completed }) => {
     );
 }
 
-export default ToDoCheck;
+export default ToDoCheckItem;
