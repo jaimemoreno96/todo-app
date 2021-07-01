@@ -1,14 +1,23 @@
 import React, { Fragment } from 'react';
-import ToDoProvider from './context/ToDoContext';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import DarkModeProvider from './context/darkmode/DarkModeContext';
+import ToDoState from './context/todo/ToDoState';
 import ToDo from './pages/ToDo';
 
 const App = () => {
   return (
-    <ToDoProvider>
-      <Fragment>
-        <ToDo />
-      </Fragment>
-    </ToDoProvider>
+    <HelmetProvider>
+      <ToDoState>
+        <DarkModeProvider>
+          <Fragment>
+            <Helmet>
+              <title>ToDo App</title>
+            </Helmet>
+            <ToDo />
+          </Fragment>
+        </DarkModeProvider>
+      </ToDoState>
+    </HelmetProvider>
   );
 }
 

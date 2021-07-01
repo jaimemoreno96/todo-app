@@ -1,86 +1,47 @@
-import React, { useState } from 'react';
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
-import iconCross from '../assets/images/icon-cross.svg';
+import React, { useContext } from 'react';
+import ToDoContext from '../context/todo/ToDoContext';
+
+import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core';
 import ToDoCheckItem from '../components/ToDoCheck/ToDoCheckItem';
+import iconCross from '../assets/images/icon-cross.svg';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: '100%',
-        maxWidth: '40vw',
-        minWidth: 360,
-        backgroundColor: theme.palette.common.white,
-    },
-    todoTtemContainer: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1)
-    },
     todoItem: {
         fontFamily: 'Josefin Sans',
         fontWeight: 400,
         fontSize: '18px',
         paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1)
+        paddingBottom: theme.spacing(1),
     },
-    containerIconTheme: {
-        width: theme.spacing(3.5),
-        height: theme.spacing(3.5),
-        background: 'hsl(0, 0%, 98%)',
-        "&:hover": {
-            background: 'linear-gradient(to right bottom, hsl(192, 100%, 67%), hsl(280, 87%, 65%))',
-            cursor: "pointer"
+    listItem: {
+        "&:hover > *": {
+            visibility: 'visible'
         }
     },
-    iconTheme: {
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-        backgroundColor: theme.palette.common.white,
-        "&:hover": {
-            cursor: "pointer"
-        }
-        // margin: theme.spacing(1),
-        // "&:hover": {
-        //     borderRadius: '50%',
-        //     border: '1px solid transparent',
-        //     borderWidth: '10px',
-        //     "&:before": {
-        //         content: '',
-        //         borderImage: 'linear-gradient(to right bottom, hsl(192, 100%, 67%), hsl(280, 87%, 65%)) 10% round',
-        //         zIndex: '-1'
-        //     }
-
-
-        // },
+    deleteBtn: {
+        visibility: 'hidden'
     }
 }));
 
 const ToDoItem = ({ todo }) => {
     const classes = useStyles();
-    const { _id, title, completed } = todo;
+    const { _id, title } = todo;
+    const { deleteTodo } = useContext(ToDoContext)
 
-    const [toggle, setToggle] = useState(false);
+    const handleClick = (_id) => {
+        deleteTodo(_id)
+    }
 
-    const deleteBtn = toggle ?
-        <ListItemSecondaryAction
-            onMouseEnter={() => setToggle(true)}
-            onMouseLeave={() => setToggle(false)}
-        >
-            <IconButton edge="end" aria-label="delete">
-                <img src={iconCross} alt="icon-cross" />
-            </IconButton>
-        </ListItemSecondaryAction>
-        : null;
 
     return (
-        <ListItem
-            onMouseEnter={() => setToggle(true)}
-            onMouseLeave={() => setToggle(false)}
-        >
-            <ToDoCheckItem completed={completed} />
+        <ListItem classes={{ container: classes.listItem }} >
+            <ToDoCheckItem todo={todo} />
             <ListItemText className={classes.todoItem} disableTypography primary={title} />
-            {deleteBtn}
+            <ListItemSecondaryAction className={classes.deleteBtn} >
+                <IconButton edge="end" aria-label="delete" onClick={() => handleClick(_id)}>
+                    <img src={iconCross} alt="icon-cross" />
+                </IconButton>
+            </ListItemSecondaryAction>
         </ListItem >
     );
 }

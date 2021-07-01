@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Divider, Grid, List, makeStyles, Paper } from '@material-ui/core';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { ToDoContext } from '../context/ToDoContext';
+import ToDoContext from '../context/todo/ToDoContext';
 import '@fontsource/josefin-sans';
 
 import ToDoTitle from '../layouts/ToDoTitle';
@@ -14,17 +14,14 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-
-        // backgroundColor: theme.palette.common.white,
         [theme.breakpoints.down('xs')]: {
             width: '85%',
+            marginTop: theme.spacing(3)
         },
         [theme.breakpoints.up('sm')]: {
-            width: '40%',
+            width: '38%',
+            marginTop: theme.spacing(7)
         },
-
-        // maxWidth: '100%',
-        // minWidth: '40vw',
     },
     todoItem: {
         fontFamily: 'Josefin Sans',
@@ -34,70 +31,72 @@ const useStyles = makeStyles((theme) => ({
 
 const ToDo = () => {
     const classes = useStyles();
+    const { todos, getTodos, reorderTodos } = useContext(ToDoContext);
 
-    const { todos, setTodos } = useContext(ToDoContext);
+    useEffect(() => {
+        if (!todos.length) {
+            getTodos();
+        }
+    }, [getTodos, todos]);
 
     const handleOnDragEnd = (drop) => {
-        let orderedTodos = [...todos];
-        const itemIndex = drop.source.index;
-        const [todo] = orderedTodos.splice(itemIndex, 1);
-
-        orderedTodos.splice(drop.destination.index, 0, todo);
-        setTodos(orderedTodos);
+        const indexSource = drop.source.index;
+        const indexDestination = drop.destination.index;
+        reorderTodos(indexSource, indexDestination);
     }
 
     return (
         <BgContainer>
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-        >
-            <div
-                className={classes.root}
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
             >
-                <ToDoTitle />
-                <ToDoInput />
-                <Paper elevation={3}>
-                    <DragDropContext onDragEnd={handleOnDragEnd}>
-                        <Droppable droppableId="todos">
-                            {providedDroppable => (
-                                <div
-                                    ref={providedDroppable.innerRef}
-                                    {...providedDroppable.droppableProps}
-                                >
-                                    <Grid item sm={12} md={12} lg={12}>
-                                        <List component="nav" aria-label="main mailbox folders">
-                                            {todos.map((todo, index) => (
-                                                <Draggable
-                                                    key={todo._id}
-                                                    draggableId={(todo._id).toString()}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                        >
-                                                            <ToDoItem todo={todo} />
-                                                            <Divider />
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                        </List>
-                                    </Grid>
-                                    {providedDroppable.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </Paper>
-            </div>
-        </Grid>
+                <div
+                    className={classes.root}
+                >
+                    <ToDoTitle />
+                    <ToDoInput />
+                    <Paper elevation={3}>
+                        <DragDropContext onDragEnd={handleOnDragEnd}>
+                            <Droppable droppableId="todos">
+                                {providedDroppable => (
+                                    <div
+                                        ref={providedDroppable.innerRef}
+                                        {...providedDroppable.droppableProps}
+                                    >
+                                        <Grid item sm={12} md={12} lg={12}>
+                                            <List aria-label="main mailbox folders">
+                                                {todos.map((todo, index) => (
+                                                    <Draggable
+                                                        key={todo._id}
+                                                        draggableId={(todo._id).toString()}
+                                                        index={index}
+                                                    >
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                            >
+                                                                <ToDoItem todo={todo} />
+                                                                <Divider />
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                            </List>
+                                        </Grid>
+                                        {providedDroppable.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    </Paper>
+                </div>
+            </Grid>
         </BgContainer>
     );
 }

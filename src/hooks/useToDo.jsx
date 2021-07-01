@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { ToDoContext } from '../context/ToDoContext';
+import ToDoContext from '../context/todo/ToDoContext';
 
 const useToDo = () => {
-    // const [todo, setTodo] = useState(null);
     const [title, setTitle] = useState('');
     const { todos, setTodos } = useContext(ToDoContext);
 

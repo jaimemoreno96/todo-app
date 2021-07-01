@@ -1,13 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { FormControl, makeStyles, OutlinedInput, Paper } from '@material-ui/core';
+import ToDoContext from '../context/todo/ToDoContext';
 import { useForm } from 'react-hook-form';
 
 import ToDoCheckInput from './ToDoCheck/ToDoCheckInput';
-import useToDo from '../hooks/useToDo';
 
 const useStyles = makeStyles((theme) => ({
     inputStyle: {
         marginBottom: theme.spacing(3),
+        marginTop: theme.spacing(3),
     },
     fontStyle: {
         fontFamily: 'Josefin Sans',
@@ -19,18 +20,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ToDoInput = () => {
     const classes = useStyles();
-    const { register, formState: { errors }, handleSubmit } = useForm();
-    const [setTitle, todo] = useToDo();
+    const { register, handleSubmit } = useForm();
+    const { addTodo } = useContext(ToDoContext)
     
 
     const onSubmit = async values => {
         const { title } = values;
-        console.log(title);
-        setTitle(title);
-        // setTodos([
-        //     [...todos],
-        //     todo
-        // ]);
+        addTodo(title);
     }
 
 
