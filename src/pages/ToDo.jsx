@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Divider, Grid, List, makeStyles, Paper } from '@material-ui/core';
+import { Box, Divider, Grid, List, makeStyles, Paper, Typography } from '@material-ui/core';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import ToDoContext from '../context/todo/ToDoContext';
 import '@fontsource/josefin-sans';
@@ -8,36 +8,40 @@ import ToDoTitle from '../layouts/ToDoTitle';
 import ToDoItem from '../layouts/ToDoItem';
 import BgContainer from '../layouts/BgContainer';
 import ToDoInput from '../components/ToDoInput';
+import ToDoFilters from '../components/ToDoFilters/ToDoFilters';
+import ToDoFiltersMobile from '../components/ToDoFilters/ToDoFiltersMobile';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: '85%',
             marginTop: theme.spacing(3)
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '38%',
             marginTop: theme.spacing(7)
         },
     },
-    todoItem: {
+    todoCaptionContainer: {
+        marginTop: theme.spacing(5)
+    },
+    todoCaption: {
         fontFamily: 'Josefin Sans',
-        fontWeight: 400,
     },
 }));
 
 const ToDo = () => {
     const classes = useStyles();
-    const { todos, getTodos, reorderTodos } = useContext(ToDoContext);
+    const { todos, loaded, getTodos, reorderTodos } = useContext(ToDoContext);
 
     useEffect(() => {
-        if (!todos.length) {
+        if (!loaded) {
             getTodos();
         }
-    }, [getTodos, todos]);
+    }, [getTodos, loaded]);
 
     const handleOnDragEnd = (drop) => {
         const indexSource = drop.source.index;
@@ -94,7 +98,19 @@ const ToDo = () => {
                                 )}
                             </Droppable>
                         </DragDropContext>
+                        <ToDoFilters />
                     </Paper>
+                    <ToDoFiltersMobile />
+                    <Box
+                        className={classes.todoCaptionContainer}
+                        fontWeight="fontWeightLight"
+                        display="flex"
+                        justifyContent="center"
+                    >
+                        <Typography className={classes.todoCaption} variant="caption" display="block" gutterBottom>
+                            Drag and drop to reorder list
+                        </Typography>
+                    </Box>
                 </div>
             </Grid>
         </BgContainer>

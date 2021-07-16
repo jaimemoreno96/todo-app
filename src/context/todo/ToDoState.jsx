@@ -10,7 +10,8 @@ const ToDoState = props => {
 
     const initialState = {
         todos: [],
-        darkmode: false
+        darkmode: false,
+        loaded: false
     }
 
     const [state, dispatch] = useReducer(ToDoReducer, initialState);
@@ -19,9 +20,6 @@ const ToDoState = props => {
         try {
             const response = await api.get('/todos');
 
-            console.log(response.data.todos);
-
-            // setTodos(response.data.todos);
             dispatch({
                 type: types.loadTodos,
                 payload: response.data.todos
@@ -38,18 +36,12 @@ const ToDoState = props => {
             const response = await api.post(
                 '/todos', {
                 title: todo
-            })
-
-            console.log(response.data);
+            });
 
             dispatch({
                 type: types.addTodo,
                 payload: response.data
-            })
-            // setTodos([
-            //     response.data,
-            //     ...todos
-            // ]);
+            });
 
         } catch (error) {
             console.log(error);
@@ -88,11 +80,17 @@ const ToDoState = props => {
     }
 
 
-    const reorderTodos = (indexSource, indexDestination) => {
+    const reorderTodos = async (indexSource, indexDestination) => {
         try {
             let orderedTodos = [...state.todos];
             const [todo] = orderedTodos.splice(indexSource, 1);
             orderedTodos.splice(indexDestination, 0, todo);
+
+            await api.patch(
+                `/todos/${todo._id}`, {
+                position: indexDestination
+            }
+            )
 
             dispatch({
                 type: types.reorderTodos,
@@ -101,21 +99,59 @@ const ToDoState = props => {
         } catch (error) {
             console.log(error);
         }
-
-
     }
 
+    const filterTodos = async name => {
+        try {
+            const response = await api.get('/todos');
+
+            const mapping = {
+                "active": (response.data.todos).filter(todo => !todo.completed),
+                "completed": (response.data.todos).filter(todo => todo.completed)
+            }
+
+            const filteredTodos = mapping[name] || response.data.todos;
+
+            dispatch({
+                type: types.reorderTodos,
+                payload: filteredTodos
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const deleteCompletedTodos = async () => {
+        try {
+            await api.delete('/todos/');
+
+            const todos = [...state.todos].filter(todo => !todo.completed);
+
+            dispatch({
+                type: types.reorderTodos,
+                payload: todos
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
 
 
     return (
         <ToDoContext.Provider
             value={{
                 todos: state.todos,
+                loaded: state.loaded,
                 getTodos,
                 addTodo,
                 updateTodo,
                 deleteTodo,
-                reorderTodos
+                reorderTodos,
+                filterTodos,
+                deleteCompletedTodos
             }}
         >
             {props.children}

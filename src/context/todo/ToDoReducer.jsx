@@ -6,7 +6,8 @@ const ToDoReducer = (state, action) => {
     const mapping = {
         [loadTodos]: {
             ...state,
-            todos: action.payload
+            todos: action.payload,
+            loaded: true
         },
         [addTodo]: {
             ...state,

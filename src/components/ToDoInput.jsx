@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 const ToDoInput = () => {
     const classes = useStyles();
     const { register, handleSubmit } = useForm();
-    const { addTodo } = useContext(ToDoContext)
-    
+    const { addTodo } = useContext(ToDoContext);
+
 
     const onSubmit = async values => {
         const { title } = values;
