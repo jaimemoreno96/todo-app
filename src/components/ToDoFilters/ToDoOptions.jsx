@@ -1,8 +1,17 @@
 import React, { useContext, useState } from 'react';
 import ToDoContext from '../../context/todo/ToDoContext';
-import { Box, Button, Typography } from '@material-ui/core';
+import { DarkModeContext } from '../../context/darkmode/DarkModeContext';
+import { Box, Button, Typography, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    btnStyle:{
+        color: darkmode => darkmode ? 'hsl(234, 11%, 52%)': 'hsl(236, 9%, 61%)' 
+    }
+}));
 
 const ToDoOptions = () => {
+    const { darkmode } = useContext(DarkModeContext);
+    const classes = useStyles(darkmode);
     const { filterTodos } = useContext(ToDoContext);
 
     const [filters, setFilters] = useState({
@@ -49,7 +58,7 @@ const ToDoOptions = () => {
                 onClick={() => handleClick("completed", completed)}
                 disabled={completed}
             >
-                <Typography classes={{ label: }} variant="caption" display="block" gutterBottom>
+                <Typography classes={{ label: classes.btnStyle}} variant="caption" display="block" gutterBottom>
                     Completed
                 </Typography>
             </Button>
