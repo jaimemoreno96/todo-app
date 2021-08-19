@@ -1,7 +1,7 @@
 import React from 'react';
-import ToDoOptions from './ToDoOptions';
-
 import { Hidden, makeStyles, Paper } from '@material-ui/core';
+
+import ToDoOptions from './ToDoOptions';
 
 const useStyles = makeStyles((theme) => ({
     root: {

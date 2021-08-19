@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { Box, Divider, Grid, List, makeStyles, Paper, Typography } from '@material-ui/core';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import ToDoContext from '../context/todo/ToDoContext';
+import { DarkModeContext } from '../context/darkmode/DarkModeContext';
+
 import '@fontsource/josefin-sans';
 
 import ToDoTitle from '../layouts/ToDoTitle';
@@ -31,10 +33,16 @@ const useStyles = makeStyles((theme) => ({
     todoCaption: {
         fontFamily: 'Josefin Sans',
     },
+    todoList: {
+        backgroundColor: darkmode => darkmode ? 'hsl(235, 24%, 19%)' : theme.palette.common.white,
+
+    }
 }));
 
 const ToDo = () => {
-    const classes = useStyles();
+    const { darkmode } = useContext(DarkModeContext);
+    const classes = useStyles(darkmode);
+
     const { todos, loaded, getTodos, reorderTodos } = useContext(ToDoContext);
 
     useEffect(() => {
@@ -63,7 +71,7 @@ const ToDo = () => {
                 >
                     <ToDoTitle />
                     <ToDoInput />
-                    <Paper elevation={3}>
+                    <Paper className={classes.todoList} elevation={3}>
                         <DragDropContext onDragEnd={handleOnDragEnd}>
                             <Droppable droppableId="todos">
                                 {providedDroppable => (

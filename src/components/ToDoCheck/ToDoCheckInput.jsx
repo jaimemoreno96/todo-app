@@ -5,20 +5,20 @@ const useStyles = makeStyles((theme) => ({
     containerIcon: {
         width: theme.spacing(3.5),
         height: theme.spacing(3.5),
-        background: 'hsl(0, 0%, 98%)',
+        background: props => props.darkmode ? 'hsl(237, 14%, 26%)' : 'hsl(0, 0%, 98%)',
     },
     iconTheme: {
         width: theme.spacing(3),
         height: theme.spacing(3),
-        background: theme.palette.common.white,
-        color: theme.palette.common.white
+        background: props => props.darkmode ? 'hsl(235, 24%, 19%)' : theme.palette.common.white,
+        color: props => props.darkmode ? 'hsl(235, 24%, 19%)' : theme.palette.common.white
     }
 }));
 
-const ToDoCheckInput = () => {
-    const classes = useStyles();
+const ToDoCheckInput = ({ darkmode }) => {
+    const classes = useStyles({ darkmode });
 
-    return ( 
+    return (
         <ListItemAvatar>
             <Avatar className={classes.containerIcon}>
                 <Avatar className={classes.iconTheme}>
@@ -26,7 +26,7 @@ const ToDoCheckInput = () => {
                 </Avatar>
             </Avatar>
         </ListItemAvatar>
-     );
+    );
 }
- 
+
 export default ToDoCheckInput;

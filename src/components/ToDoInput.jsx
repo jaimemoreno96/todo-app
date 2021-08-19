@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { FormControl, makeStyles, OutlinedInput, Paper } from '@material-ui/core';
 import ToDoContext from '../context/todo/ToDoContext';
+import { DarkModeContext } from '../context/darkmode/DarkModeContext';
 import { useForm } from 'react-hook-form';
 
 import ToDoCheckInput from './ToDoCheck/ToDoCheckInput';
@@ -9,17 +10,20 @@ const useStyles = makeStyles((theme) => ({
     inputStyle: {
         marginBottom: theme.spacing(3),
         marginTop: theme.spacing(3),
+        backgroundColor: darkmode => darkmode ? 'hsl(235, 24%, 19%)' : theme.palette.common.white,
     },
     fontStyle: {
         fontFamily: 'Josefin Sans',
         fontWeight: 400,
-        fontSize: '18px'
+        fontSize: '18px',
+        color: darkmode => darkmode ? 'hsl(234, 39%, 85%)' : theme.palette.common.black,
     }
 }));
 
 
 const ToDoInput = () => {
-    const classes = useStyles();
+    const { darkmode } = useContext(DarkModeContext);
+    const classes = useStyles(darkmode);
     const { register, handleSubmit } = useForm();
     const { addTodo } = useContext(ToDoContext);
 
@@ -36,7 +40,7 @@ const ToDoInput = () => {
                 <OutlinedInput
                     id="outlined-adornment-weight"
                     placeholder="Create a new todo..."
-                    startAdornment={<ToDoCheckInput />}
+                    startAdornment={<ToDoCheckInput darkmode={darkmode} />}
                     // value={todo}
                     // onChange={() => updTodo(todo)}
                     {...register("title", { required: true })}

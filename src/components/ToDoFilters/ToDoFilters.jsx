@@ -4,9 +4,7 @@ import ToDoContext from '../../context/todo/ToDoContext';
 import ToDoOptions from './ToDoOptions';
 
 const ToDoFilters = () => {
-    const { todos, deleteCompletedTodos } = useContext(ToDoContext);
-
-    let activeTodos = [...todos].filter(todo => !todo.completed);
+    const { quantity, deleteCompletedTodos } = useContext(ToDoContext);
 
     return (
         <Grid
@@ -18,7 +16,7 @@ const ToDoFilters = () => {
             <Grid item xs={6} sm={6} md={3} lg={3}>
                 <Box display="flex" justifyContent="center">
                     <Typography variant="caption" color="textSecondary" display="block" gutterBottom>
-                        {activeTodos.length} items left
+                        {quantity} items left
                     </Typography>
                 </Box>
             </Grid>

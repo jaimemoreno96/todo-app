@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '100%',
         position: 'absolute',
         backgroundRepeat: 'no-repeat',
+        backgroundColor: darkmode => darkmode ? 'hsl(235, 21%, 11%)' : 'hsl(0, 0%, 98%)',
         backgroundSize: '100%',
         [theme.breakpoints.down('xs')]: {
             backgroundImage: darkmode => darkmode ? `url(${bgMobileDark})` : `url(${bgMobileLight})`

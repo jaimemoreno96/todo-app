@@ -11,7 +11,8 @@ const ToDoState = props => {
     const initialState = {
         todos: [],
         darkmode: false,
-        loaded: false
+        loaded: false,
+        quantity: 0
     }
 
     const [state, dispatch] = useReducer(ToDoReducer, initialState);
@@ -20,9 +21,16 @@ const ToDoState = props => {
         try {
             const response = await api.get('/todos');
 
+            const todos = response.data.todos
+
+            console.log(todos);
+
             dispatch({
                 type: types.loadTodos,
-                payload: response.data.todos
+                payload: {
+                    todos: todos,
+                    quantity: todos.filter(todo => !todo.completed).length
+                }
             })
         } catch (error) {
             console.log(error);
@@ -65,13 +73,16 @@ const ToDoState = props => {
         }
     }
 
-    const deleteTodo = async _id => {
+    const deleteTodo = async (_id, completed) => {
         try {
             await api.delete(`/todos/${_id}`);
 
             dispatch({
                 type: types.deleteTodo,
-                payload: _id
+                payload: {
+                    id: _id,
+                    completed: completed
+                }
             });
 
         } catch (error) {
@@ -137,7 +148,7 @@ const ToDoState = props => {
             console.log(error);
         }
     }
-    
+
 
 
     return (
@@ -145,6 +156,7 @@ const ToDoState = props => {
             value={{
                 todos: state.todos,
                 loaded: state.loaded,
+                quantity: state.quantity,
                 getTodos,
                 addTodo,
                 updateTodo,

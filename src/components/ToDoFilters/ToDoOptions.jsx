@@ -49,7 +49,7 @@ const ToDoOptions = () => {
                 onClick={() => handleClick("completed", completed)}
                 disabled={completed}
             >
-                <Typography variant="caption" display="block" gutterBottom>
+                <Typography classes={{ label: }} variant="caption" display="block" gutterBottom>
                     Completed
                 </Typography>
             </Button>
