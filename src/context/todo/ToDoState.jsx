@@ -97,16 +97,23 @@ const ToDoState = props => {
             const [todo] = orderedTodos.splice(indexSource, 1);
             orderedTodos.splice(indexDestination, 0, todo);
 
-            await api.patch(
-                `/todos/${todo._id}`, {
-                position: indexDestination
-            }
-            )
+            console.log(indexSource, indexDestination);
 
-            dispatch({
-                type: types.reorderTodos,
-                payload: orderedTodos
-            });
+            if (indexSource !== indexDestination) {
+                dispatch({
+                    type: types.reorderTodos,
+                    payload: orderedTodos
+                });
+
+                await api.patch(
+                    `/todos/${todo._id}`, {
+                    position: indexSource + 1,
+                    destination: indexDestination + 1
+                });
+
+            }
+
+
         } catch (error) {
             console.log(error);
         }

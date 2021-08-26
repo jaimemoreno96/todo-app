@@ -4,8 +4,8 @@ import { DarkModeContext } from '../../context/darkmode/DarkModeContext';
 import { Box, Button, Typography, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    btnStyle:{
-        color: darkmode => darkmode ? 'hsl(234, 11%, 52%)': 'hsl(236, 9%, 61%)' 
+    btnStyle: {
+        color: darkmode => darkmode ? 'hsl(234, 11%, 52%)' : 'hsl(236, 9%, 61%)'
     }
 }));
 
@@ -13,6 +13,10 @@ const ToDoOptions = () => {
     const { darkmode } = useContext(DarkModeContext);
     const classes = useStyles(darkmode);
     const { filterTodos } = useContext(ToDoContext);
+
+    const btnStyle = {
+        color: darkmode ? 'hsl(234, 11%, 52%)' : 'hsl(236, 9%, 61%)'
+    }
 
     const [filters, setFilters] = useState({
         all: true,
@@ -39,28 +43,36 @@ const ToDoOptions = () => {
                 size="small"
                 onClick={() => handleClick("all", all)}
                 disabled={all}
+                color="inherit"
+
             >
-                <Typography variant="caption" display="block" gutterBottom>
+                All
+                {/* <Typography style={btnStyle} variant="caption" display="block" gutterBottom>
                     All
-                </Typography>
+                </Typography> */}
             </Button>
             <Button
                 size="small"
                 onClick={() => handleClick("active", active)}
                 disabled={active}
+                color="inherit"
             >
-                <Typography variant="caption" display="block" gutterBottom>
+                Active
+                {/* <Typography style={btnStyle} variant="caption" display="block" gutterBottom>
                     Active
-                </Typography>
+                </Typography> */}
             </Button>
             <Button
                 size="small"
                 onClick={() => handleClick("completed", completed)}
                 disabled={completed}
+                color="inherit"
+
             >
-                <Typography classes={{ label: classes.btnStyle}} variant="caption" display="block" gutterBottom>
-                    Completed
-                </Typography>
+                Completed
+                {/* <Typography style={btnStyle} variant="caption" display="block" gutterBottom>
+                Completed
+            </Typography> */}
             </Button>
         </Box>
     );

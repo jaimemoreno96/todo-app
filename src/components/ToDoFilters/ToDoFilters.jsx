@@ -32,9 +32,10 @@ const ToDoFilters = () => {
                         onClick={() => deleteCompletedTodos()}
                         variant="text"
                     >
-                        <Typography variant="caption" display="block" gutterBottom>
+                        Clear completed
+                        {/* <Typography variant="caption" display="block" gutterBottom>
                             Clear completed
-                        </Typography>
+                        </Typography> */}
                     </Button>
                 </Box>
             </Grid>
