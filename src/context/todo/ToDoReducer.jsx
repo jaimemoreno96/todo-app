@@ -13,8 +13,8 @@ const ToDoReducer = (state, action) => {
         [addTodo]: {
             ...state,
             todos: [
-                action.payload,
-                ...state.todos
+                ...state.todos,
+                action.payload
             ],
             quantity: state.quantity + 1
         },
